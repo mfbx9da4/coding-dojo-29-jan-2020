@@ -18,10 +18,20 @@ export class Robot {
     return this.blockToSlotIndices[a];
   }
 
-  private remove(a: number): Array<number> {
+  private reset(toReset: number): void {
+    this.slots[toReset].push(toReset);
+  }
+
+  private removeAbove(a: number): Array<number> {
     const slot = this.getSlot(a);
     const start = this.slots[slot].indexOf(a);
     return this.slots[slot].splice(start);
+  }
+
+  private pluck(a: number): number {
+    const aboveAndA = this.removeAbove(a);
+    aboveAndA.slice(1).forEach(this.reset.bind(this))
+    return a;
   }
 
   private putOver(newStack: number[], slotIndex: number): void {
@@ -33,10 +43,23 @@ export class Robot {
   }
 
   pileOver(a: number, b: number): void {
-    const stackA = this.remove(a);
+    const stackA = this.removeAbove(a);
     const slotIndex = this.getSlot(b);
     this.putOver(stackA, slotIndex);
   }
+
+  moveOver(a: number, b:number): void {
+    this.pluck(a);
+    this.putOver([a], this.getSlot(b));
+  }
+
+  pileOnto(a: number, b:number): void {
+    const slot = this.getSlot(b);
+    const index = this.slots[slot].indexOf(b);
+    this.slots[slot].splice(index+1).forEach(this.reset.bind(this));
+    this.pileOver(a, b);
+  }
+
 }
 
 // export function main(input: string) {
