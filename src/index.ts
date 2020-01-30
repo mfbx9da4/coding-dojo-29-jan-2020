@@ -1,6 +1,7 @@
 export class Robot {
   private slots: number[][];
   private blockToSlotIndices: Array<number>;
+
   constructor(n: number) {
     this.slots = [];
     this.blockToSlotIndices = [];
@@ -18,9 +19,9 @@ export class Robot {
     return this.blockToSlotIndices[a];
   }
 
-  private reset(toReset: number): void {
+  private reset = (toReset: number): void => {
     this.slots[toReset].push(toReset);
-  }
+  };
 
   private removeAbove(a: number): Array<number> {
     const slot = this.getSlot(a);
@@ -30,7 +31,7 @@ export class Robot {
 
   private pluck(a: number): number {
     const aboveAndA = this.removeAbove(a);
-    aboveAndA.slice(1).forEach(this.reset.bind(this))
+    aboveAndA.slice(1).forEach(this.reset.bind(this));
     return a;
   }
 
@@ -48,18 +49,17 @@ export class Robot {
     this.putOver(stackA, slotIndex);
   }
 
-  moveOver(a: number, b:number): void {
+  moveOver(a: number, b: number): void {
     this.pluck(a);
     this.putOver([a], this.getSlot(b));
   }
 
-  pileOnto(a: number, b:number): void {
+  pileOnto(a: number, b: number): void {
     const slot = this.getSlot(b);
     const index = this.slots[slot].indexOf(b);
-    this.slots[slot].splice(index+1).forEach(this.reset.bind(this));
+    this.slots[slot].splice(index + 1).map(this.reset);
     this.pileOver(a, b);
   }
-
 }
 
 // export function main(input: string) {
