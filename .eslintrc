@@ -6,12 +6,13 @@
     "sourceType": "module"
   },
   "rules": {
-    "semi": ["error", "always"],
+    "semi": [0],
     "quotes": ["error", "double"],
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": 1,
     "@typescript-eslint/no-inferrable-types": [
-      "warn", {
+      "warn",
+      {
         "ignoreParameters": true
       }
     ],
